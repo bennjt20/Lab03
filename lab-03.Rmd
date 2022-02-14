@@ -28,6 +28,7 @@ View(nobel)
 
 ### Exercise 2
 
+2.1 Create dataframe
     Create a new data frame called nobel_living that filters for:
     -laureates for whom country is available
     -laureates who are people as opposed to organizations (organizations are denoted with "org" as their gender)
@@ -45,24 +46,67 @@ nobel %>%
 ```
 
 ```{r newdataframe2}
-myDataframe <- nobel %>%
+nobel_living <- nobel %>%
   filter(!is.na(country),
   gender != "org",
   is.na(died_date))
 ```
 
+2.2 Mutate- 
+
+```{r NobelMutate}
+nobel_living <- nobel_living %>%
+  mutate(
+    country_us = if_else(country == "USA", "USA", "Other")
+  )
+```
+
+2.3 Mutate- Physics, Medicine, Chemistry, and Economics.
+
+```{r NobelMutate}
+nobel_living_science <- nobel_living %>%
+  filter(category %in% c("Physics", "Medicine", "Chemistry", "Economics"))
+```
+
 ### Exercise 3
 
-Remove this text, and add your answer for Exercise 1 here.
-Add code chunks as needed.
-Don't forget to label your code chunk.
-Do not use spaces in code chunk labels.
+***Note: This exercise proved to be extremely difficult. 
+
+Faceted bar plot visualizing the relationship between the category of prize and whether the laureate was in the US when they won the nobel prize.
+
+Interpret your visualization, and say a few words about whether the Buzzfeed headline is supported by the data.
+
+    Your visualization should be faceted by category.
+    For each facet you should have two bars, one for winners in the US and one for Other.
+    Flip the coordinates so the bars are horizontal, not vertical.
+
+```{r FacetedBarPlot}
+ggplot(nobel, aes(x = nobel_living_science, fill = country)) +
+ geom_histogram(binwidth = 5000) +
+ labs(
+   x = "-Living Nobel",
+   y = "Frequency",
+   title = "Faceted bar plot"
+ ) +
+ facet_wrap(~ country, nrow = 2)
+```
 
 ### Exercise 4
 
+***Note: This code did not produce any error messages, but it also did not produce any result that I could see.  
+
 Create a new variable called born_country_us that has the value "USA" if the laureate is born in the US, and "Other" otherwise. How many of the winners are born in the US?
 
+```{r born_country_us}
+nobel_living_science <- nobel_living_science %>%
+  mutate(
+    born_country_us = if_else(country == "USA", "USA", "Other")
+  )
+```
+
 ### Exercise 5
+
+***Note: I could not complete Exercise 3 due to the complexity.
 
 Add a second variable to your visualization from Exercise 3 based on whether the laureate was born in the US or not. Based on your visualization, do the data appear to support Buzzfeed’s claim? Explain your reasoning in 1-2 sentences.
 

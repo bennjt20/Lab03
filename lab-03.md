@@ -32,6 +32,8 @@ View(nobel)
     -laureates who are still alive (their died_date is NA)
 
      Confirm that once you have filtered for these characteristics you are left with a data frame with 228 observations, once again using inline code.
+     
+     **JTB Note: In order to see the actual 228x26 tibble, I've entered the code without the dataframe command (myDataframe <-) immediately below. Then, below that, I've entered the code with the dataframe command. 
 
 ``` r
 nobel %>%
@@ -62,7 +64,7 @@ nobel %>%
     ## #   country_original <chr>
 
 ``` r
-myDataframe <- nobel %>%
+nobel_living <- nobel %>%
   filter(!is.na(country),
   gender != "org",
   is.na(died_date))
