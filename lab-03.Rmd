@@ -63,7 +63,7 @@ nobel_living <- nobel_living %>%
 
 2.3 Mutate- Physics, Medicine, Chemistry, and Economics.
 
-```{r NobelMutate}
+```{r NobelMutate_by_field}
 nobel_living_science <- nobel_living %>%
   filter(category %in% c("Physics", "Medicine", "Chemistry", "Economics"))
 ```
@@ -116,6 +116,8 @@ Add a second variable to your visualization from Exercise 3 based on whether the
 
 
 ### Exercise 6
+
+***Note: The error message I'm recieving here is "object 'born_country_us' not found", but I thought that I created that above in Exercise 4.
 
 In a single pipeline, filter for laureates who won their prize in the US, but were born outside of the US, and then create a frequency table (with the count() function) for their birth country (born_country) and arrange the resulting data frame in descending order of number of observations for each country. Which country is the most common?
 
