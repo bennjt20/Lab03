@@ -28,30 +28,24 @@ View(nobel)
 
 ### Exercise 2
 
-    Create a new data frame called nobel_living that filters for
+    Create a new data frame called nobel_living that filters for:
+    -laureates for whom country is available
+    -laureates who are people as opposed to organizations (organizations are denoted with "org" as their gender)
+    -laureates who are still alive (their died_date is NA)
 
-    laureates for whom country is available
-    laureates who are people as opposed to organizations (organizations are denoted with "org" as their gender)
-    laureates who are still alive (their died_date is NA)
+     Confirm that once you have filtered for these characteristics you are left with a data frame with 228 observations, once again using inline code.
+     
+     **JTB Note: In order to see the actual 228x26 tibble, I've entered the code without the dataframe command (myDataframe <-) immediately below. Then, below that, I've entered the code with the dataframe command. 
 
-Confirm that once you have filtered for these characteristics you are left with a data frame with 228 observations, once again using inline code.
-
-
-
-#My initial thought:
+```{r newdataframe1}
 nobel %>%
-  filter(country !x "NA",
-  gender !"org",
-  died_date !"NA"
-  )
-  
-  nobel_living <- nobel |> 
   filter(!is.na(country),
   gender != "org",
   is.na(died_date))
+```
 
-```{r newdataframe}
-nobel %>%
+```{r newdataframe2}
+myDataframe <- nobel %>%
   filter(!is.na(country),
   gender != "org",
   is.na(died_date))
