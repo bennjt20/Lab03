@@ -53,7 +53,7 @@ nobel_living <- nobel %>%
 ```
 
 2.2 Mutate- 
-
+Make a new variable "country_us" showing whether laureate was in US when they won prize. 
 ```{r NobelMutateEx2}
 nobel_living <- nobel_living %>%
   mutate(
@@ -90,18 +90,27 @@ coord_flip()
  
 ### Exercise 4
 How many of the winners are born in the US? 147 of the winners were born in the US. 
+Background: "country_us" above showed whether laureate was US when they WON prize. Now we're showing whether they were BORN in US. 
+
+nobel_living <- nobel_living %>%
+  mutate(
+    country_us = if_else(country == "USA", "USA", "Other")
+  )
+
+Exercise 4: Create a new variable called born_country_us that has the value "USA" if the laureate is born in the US, and "Other" otherwise. How many of the winners are born in the US?
 
 ```{r born_country_us}
 nobel_living_science <- nobel_living_science %>%
   mutate(
-    born_country_us = if_else(country_us == "USA", "USA", "Other")
+    born_country_us = if_else(born_country == "USA", "USA", "Other")
   )
 nobel_living_science %>% count(born_country_us, sort = TRUE)
 ```
 
 
 ### Exercise 5
-Issue: This visualization is not showing any distinctions within the bars.
+The faceted bar plot shows us whether Nobel laureates were located in the US at the time of being awarded the Nobel prize (top bar), or outside of the US (bottom bar).
+Within these bars, we can see whether the Nobel winners were born in the US, or outside of the US. Of the Nobel laureates who were located in the US at the time of being awarded the Nobel prize (top bar), a very large share were born outside of the US. This demonstrates the significant share of America's Nobel winners who are immigrants.  
 
 
 ```{r FacetedBarPlot5}
@@ -112,6 +121,7 @@ mapping = aes(x = country_us, fill = born_country_us)) +
    x = "Location of Laureate at Time of Award",
    y = "Frequency (Number of Awards)",
    title = "Faceted bar plot",
+   fill = "Born in USA or Other"
  ) +
  facet_wrap(~ category)+
 coord_flip()
@@ -119,12 +129,10 @@ coord_flip()
 
 
 
-
-
 ### Exercise 6
-Issue: In the code below, the commands cause a "0 rows" response. This should not be happening because my "born_country" value of "Other" should not have any problems.
+Issue: In the code below, the commands lead to a "0 rows" response. This should not be happening because my "born_country" value of "Other" should not have any problems.
 
-In a single pipeline, filter for laureates who won their prize in the US, but were born outside of the US, and then create a frequency table (with the count() function) for their birth country (born_country) and arrange the resulting data frame in descending order of number of observations for each country. Which country is the most common?
+Exercise 6. In a single pipeline, filter for laureates who won their prize in the US, but were born outside of the US, and then create a frequency table (with the count() function) for their birth country (born_country) and arrange the resulting data frame in descending order of number of observations for each country. Which country is the most common?
 
 
 ```{r count_and_desc_order}
