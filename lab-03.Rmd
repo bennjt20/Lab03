@@ -1,6 +1,6 @@
 ---
 title: "Lab 03 - Nobel laureates"
-author: "John T. Bennett"
+author: "John T. BennettA"
 date: "Feb. 10, 2022"
 output: github_document
 ---
@@ -54,7 +54,7 @@ nobel_living <- nobel %>%
 
 2.2 Mutate- 
 
-```{r NobelMutate}
+```{r NobelMutateEx2}
 nobel_living <- nobel_living %>%
   mutate(
     country_us = if_else(country == "USA", "USA", "Other")
@@ -68,63 +68,70 @@ nobel_living_science <- nobel_living %>%
   filter(category %in% c("Physics", "Medicine", "Chemistry", "Economics"))
 ```
 
+
 ### Exercise 3
 
-***Note: This exercise proved to be extremely difficult. 
+This visualization shows whether the laureate was in the US when they won the Nobel prize. This shows that a large majority of laureates were indeed in the US when they won their prizes. To know whether the article's main claims are warranted, we would need to know more about the place of birth of the Nobel winners. The "born_country" variable would be better suited for this question. 
+If, theoretically, all of the Nobel winners who were in in the US when they were awarded were in fact born in the US, then that would not indicate anything about the influence of immigration. The "born_country" variable is therefore germane to the question. 
+    
 
-Faceted bar plot visualizing the relationship between the category of prize and whether the laureate was in the US when they won the nobel prize.
-
-Interpret your visualization, and say a few words about whether the Buzzfeed headline is supported by the data.
-
-    Your visualization should be faceted by category.
-    For each facet you should have two bars, one for winners in the US and one for Other.
-    Flip the coordinates so the bars are horizontal, not vertical.
-
-```{r FacetedBarPlot}
-ggplot(nobel, aes(x = nobel_living_science, fill = country)) +
- geom_histogram(binwidth = 5000) +
+```{r FacetedBarPlot3}
+ggplot(nobel_living_science, aes(x = country_us)) +
+ geom_bar() +
  labs(
-   x = "-Living Nobel",
-   y = "Frequency",
+   x = "Location of Laureate at Time of Award",
+   y = "Frequency (Number of Awards)",
    title = "Faceted bar plot"
  ) +
- facet_wrap(~ country, nrow = 2)
+ facet_wrap(~ category)+
+coord_flip()
 ```
 
+ 
 ### Exercise 4
-
-***Note: This code did not produce any error messages, but it also did not produce any result that I could see.  
-
-Create a new variable called born_country_us that has the value "USA" if the laureate is born in the US, and "Other" otherwise. How many of the winners are born in the US?
+How many of the winners are born in the US? 147 of the winners were born in the US. 
 
 ```{r born_country_us}
 nobel_living_science <- nobel_living_science %>%
   mutate(
-    born_country_us = if_else(country == "USA", "USA", "Other")
+    born_country_us = if_else(country_us == "USA", "USA", "Other")
   )
+nobel_living_science %>% count(born_country_us, sort = TRUE)
 ```
 
+
 ### Exercise 5
+Issue: This visualization is not showing any distinctions within the bars.
 
-***Note: I could not complete Exercise 3 due to the complexity.
 
-Add a second variable to your visualization from Exercise 3 based on whether the laureate was born in the US or not. Based on your visualization, do the data appear to support Buzzfeed’s claim? Explain your reasoning in 1-2 sentences.
+```{r FacetedBarPlot5}
+ggplot(nobel_living_science, 
+mapping = aes(x = country_us, fill = born_country_us)) +
+ geom_bar() +
+ labs(
+   x = "Location of Laureate at Time of Award",
+   y = "Frequency (Number of Awards)",
+   title = "Faceted bar plot",
+ ) +
+ facet_wrap(~ category)+
+coord_flip()
+```
 
-    Your final visualization should contain a facet for each category.
-    Within each facet, there should be a bar for whether the laureate won the award in the US or not.
-    Each bar should have segments for whether the laureate was born in the US or not.
+
+
 
 
 ### Exercise 6
-
-***Note: The error message I'm recieving here is "object 'born_country_us' not found", but I thought that I created that above in Exercise 4.
+Issue: In the code below, the commands cause a "0 rows" response. My 
 
 In a single pipeline, filter for laureates who won their prize in the US, but were born outside of the US, and then create a frequency table (with the count() function) for their birth country (born_country) and arrange the resulting data frame in descending order of number of observations for each country. Which country is the most common?
 
+
 ```{r count_and_desc_order}
 nobel_living_science %>%
-  count(born_country_us)
-  arrange(desc(born_country_us))
+filter(country == "USA", born_country == "Other") %>%
+count(born_country) %>%
+arrange(desc(born_country))
 ```
  
 
